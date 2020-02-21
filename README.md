@@ -18,10 +18,10 @@ AmazonSESFullAccess, and AWSLambdaBasicExecutionRole is overkill but will get th
 1. Set up SES, including domain verification + MX records. This may take a bit to verify, and
 you'll need to open a support ticket to actually be able to send email to anything other than
 hand-verified email addresses.
-1. Create an S3 bucket.
-3. Add an SES rule to push inbound messages from your desired email address to the S3 bucket.
-4. Add S3 "all object create events" to the above bucket as a trigger for the Lambda function.
-5. Send your bot an email!
+2. Add an SES rule to push inbound messages from your desired email address to an S3 bucket.
+It's easier to get this set up if you create the bucket within the rule creation process.
+3. Add S3 "all object create events" to the above bucket as a trigger for the Lambda function.
+4. Send your bot an email!
 
 ## API
 
