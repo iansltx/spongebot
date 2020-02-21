@@ -1,0 +1,13 @@
+prefix=/opt/bref
+exec_prefix=/opt/bref
+libdir=/opt/bref/lib
+includedir=/opt/bref/include
+datarootdir=/opt/bref/share
+datadir=/opt/bref/share
+
+Name: oniguruma
+Description: Regular expression library
+Version: 6.9.3
+Requires:
+Libs: -L${libdir} -lonig
+Cflags: -I${includedir}
