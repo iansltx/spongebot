@@ -15,6 +15,11 @@ AmazonSESFullAccess, and AWSLambdaBasicExecutionRole is overkill but will get th
 
 ## Email handler
 
+> **NOTE:** The direct SES -> Lambda integration doesn't provide message content, so you can't
+> use that integration for this example. If all you need is e-mail headers, the Lambda
+> integration will work fine, and provides headers as part of the JSON-encoded event body, so
+> there's no need to use a MIME parser.
+
 1. Set up SES, including domain verification + MX records. This may take a bit to verify, and
 you'll need to open a support ticket to actually be able to send email to anything other than
 hand-verified email addresses.
