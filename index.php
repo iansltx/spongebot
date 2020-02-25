@@ -17,11 +17,11 @@ function recapitalize(string $string)
     }, mb_str_split($string)));
 }
 
-function dispatchS3Upload($task, S3Client $s3Client, SesClient $sesClient, MailMimeParser $parser)
+$dispatchS3Upload = function($event) use ($parser, $s3Client, $sesClient)
 {
     $rawEmail = $s3Client->getObject([
-        'Bucket' => $task['body']['Records'][0]['s3']['bucket']['name'],
-        'Key' => $task['body']['Records'][0]['s3']['object']['key']
+        'Bucket' => $event['Records'][0]['s3']['bucket']['name'],
+        'Key' => $event['Records'][0]['s3']['object']['key']
     ])['Body'];
 
     $email = $parser->parse($rawEmail);
@@ -45,28 +45,22 @@ function dispatchS3Upload($task, S3Client $s3Client, SesClient $sesClient, MailM
         ]
     ]);
 
-    lambdaSubmitTask($task['requestId'], 'Handled email from ' . $from . ' with subject ' . $subject);
-}
+    return 'Handled email from ' . $from . ' with subject ' . $subject;
+};
 
-function dispatchAPICall($task)
-{
-    lambdaSubmitTask($task['requestId'], [
-        'statusCode' => isset($task['body']['queryStringParameters']['message']) ? 200 : 400,
-        'body' => json_encode([
-            'message' => recapitalize(
-                $task['body']['queryStringParameters']['message'] ??
-                'Please provide a message as "message" in your query string'
-            )
-        ])
-    ]);
-}
+$dispatchAPICall = fn ($event) => [
+    'statusCode' => isset($event['queryStringParameters']['message']) ? 200 : 400,
+    'body' => json_encode([
+        'message' => recapitalize(
+            $event['queryStringParameters']['message'] ??
+            'Please provide a message as "message" in your query string'
+        )
+    ])
+];
 
 while (true) {
-    $task = lambdaGetTask();
-
-    if (isset($task['body']['version'])) {
-        dispatchAPICall($task);
-    } else {
-        dispatchS3Upload($task, $s3Client, $sesClient, $parser);
-    }
+    lambdaSubmitTask(
+        ($event = lambdaGetTask())['requestId'],
+        call_user_func(isset($event['body']['version']) ? $dispatchAPICall : $dispatchS3Upload, $event['body'])
+    );
 }
