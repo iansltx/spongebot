@@ -3,6 +3,9 @@ SpongeBot
 
 An example of a PHP-based Lambda function, from scratch...ish (runtime is based on Bref).
 
+If you're looking for an example using Bref and Serverless Framework, switch to the `bref`
+branch.
+
 ## Basic Setup
 
 1. `composer install`
