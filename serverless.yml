@@ -1,0 +1,29 @@
+service: app
+
+provider:
+    name: aws
+    region: us-east-1
+    runtime: provided
+
+plugins:
+    - ./vendor/bref/bref
+
+functions:
+    non-fpm:
+        handler: index.php
+        description: ''
+        layers:
+            - ${bref:layer.php-74}
+        events:
+            - httpApi:
+                method: '*'
+                path: '/'
+    fpm:
+        handler: fpm.php
+        description: ''
+        layers:
+            - ${bref:layer.php-74-fpm}
+        events:
+            - httpApi:
+                  method: '*'
+                  path: '/fpm'

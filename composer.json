@@ -2,6 +2,7 @@
     "require": {
         "zbateson/mail-mime-parser": "^1.2",
         "aws/aws-sdk-php": "^3.133",
-        "ext-json": "*"
+        "ext-json": "*",
+        "bref/bref": "^0.5.15"
     }
 }

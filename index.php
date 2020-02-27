@@ -58,9 +58,6 @@ $dispatchAPICall = fn ($event) => [
     ])
 ];
 
-while (true) {
-    lambdaSubmitTask(
-        ($event = lambdaGetTask())['requestId'],
-        call_user_func(isset($event['body']['version']) ? $dispatchAPICall : $dispatchS3Upload, $event['body'])
-    );
-}
+return function($event) use ($dispatchAPICall, $dispatchS3Upload) {
+    return call_user_func(isset($event['version']) ? $dispatchAPICall : $dispatchS3Upload, $event);
+};
