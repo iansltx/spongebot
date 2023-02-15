@@ -3,8 +3,6 @@ service: app
 provider:
     name: aws
     region: us-east-1
-    runtime: provided.al2
-    deploymentMethod: direct # fastest deployment method
 
 plugins:
     - ./vendor/bref/bref
@@ -12,10 +10,8 @@ plugins:
 functions:
     api:
         handler: fpm.php
-        description: ''
+        runtime: php-82-fpm
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-        layers:
-            - ${bref:layer.php-82-fpm}
         events:
             -   httpApi: '*'
 
