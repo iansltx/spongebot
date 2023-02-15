@@ -24,7 +24,7 @@ $dispatchS3Upload = function($event) use ($parser, $s3Client, $sesClient)
         'Key' => $event['Records'][0]['s3']['object']['key']
     ])['Body'];
 
-    $email = $parser->parse($rawEmail);
+    $email = $parser->parse($rawEmail, false);
 
     $sesClient->sendEmail([
         'Destination' => [
