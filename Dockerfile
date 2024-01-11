@@ -1,4 +1,4 @@
-FROM php:8.2.3-fpm-alpine3.17
+FROM php:8.3.1-fpm-alpine3.19
 
 RUN apk upgrade --no-cache && apk add --no-cache openssl
 
