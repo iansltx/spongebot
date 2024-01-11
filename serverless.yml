@@ -10,7 +10,7 @@ plugins:
 functions:
     api:
         handler: fpm.php
-        runtime: php-82-fpm
+        runtime: php-83-fpm
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
         events:
             -   httpApi: '*'
